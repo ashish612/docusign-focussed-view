@@ -27,7 +27,7 @@
 
                 <div class="col-md-12">
                     <label class="form-label" for="email">Email address:</label>
-                    <input id="email" type="email" class="form-control" name="email" value=""/> 
+                    <input id="email" type="email" class="form-control" name="email" value="me@gmail.com"/> 
                 </div>
                 
                 <div class="col-md-12">
@@ -137,23 +137,22 @@
                     const signing = docusign.signing(signingConfiguration);
                         
                     signing.on('ready', (event) => {
-                        $('#main > iframe').css('height', `${window.innerHeight - this.padding}px`);
+                        $('#signing-ceremony > iframe').css('height', `${window.innerHeight - 70}px`);
                         
                         console.log('UI is rendered');
                     });
                     signing.on('sessionEnd', (event) => {
                         /** The event here denotes what caused the sessionEnd to trigger, such as signing_complete, ttl_expired etc../ */
                         console.log('sessionend', event);
-                        // Event: { returnUrl: url, type: "sessionEnd", sessionEndType: "signing_complete"}
-                        this.signing = false;
+                        // Event: { returnUrl: url, type: "sessionEnd", sessionEndType: "signing_complete"}                        
                         if (event.type === "sessionEnd") {
                             const msg = `<p>Result: <b>${event.sessionEndType.replace("_", " ")}</b></p>`;                            
-                            this.logger.post("Signing session ended", msg);
+                            console.log("Signing session ended", msg);
                         } else {
                             const msg = `<p>Event data: ${JSON.stringify(event)}</p>`;                            
-                            this.logger.post("Signing Session Message", msg);
-                        } 
-                        $("#signing-ceremony").setAttribute("hidden", "")
+                            console.log("Signing Session Message", msg);
+                        }                         
+                        document.getElementById("signing-ceremony").setAttribute("hidden", "")
                         $("#main").removeClass("hide"); // Display the container
                     });
 
